@@ -1,3 +1,22 @@
 from django.contrib import admin
 
 # Register your models here.
+from django.contrib import admin
+from .models import Book
+
+admin.site.register(Book)
+
+#admn inerface customization
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'publication_year')  # Show these columns
+    list_filter = ('author', 'publication_year')  # Filter sidebar options
+    search_fields = ('title', 'author')  # Enable search bar
+
+admin.site.register(Book, BookAdmin)
