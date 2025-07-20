@@ -6,7 +6,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
 from django.views.generic.detail import DetailView
-from .models import Book, Library
+from .models import Book
+from .models import Library
 
 def register(request):
     if request.method == 'POST':
@@ -35,4 +36,3 @@ class LibraryDetailView(DetailView):
     model = Library                                  # ← Library
     template_name = 'relationship_app/library_detail.html'  # ← relationship_app/library_detail.html
 
-    
