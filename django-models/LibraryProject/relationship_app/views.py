@@ -1,10 +1,10 @@
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test, permissions_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
 from .formsimport BookForm
-from django.shortcuts import get_object_or_404
+
 
 
 # Authentication imports
