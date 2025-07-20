@@ -7,7 +7,10 @@ from .views import list_books
 app_name = 'relationship_app'
 
 urlpatterns = [
-    # existing app views
+    path('books/add/', views.add_book, name='book-add'),
+    path('books/<int:pk>/edit/', views.edit_book, name='book-edit'),
+    path('books/<int:pk>/delete/', views.delete_book, name='book-delete'),
+
     path('books/', list_books, name='book-list'),
     path('books/', views.list_books, name='book-list'),
 
@@ -36,6 +39,8 @@ urlpatterns = [
     path(
         'member/', views.member_view, name='member_view'
     ),
+    path('books/', views.list_books, name='book-list'),
+    path('books/<int:pk>/', views.BookDetailView.as_view(), name='book-detail'),
 
 
 ]

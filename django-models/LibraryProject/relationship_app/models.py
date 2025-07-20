@@ -4,6 +4,25 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+class Library(models.Model):
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book, related_name='libraries')
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    publication_year = models.PositiveIntegerField()
+
+    class Meta:
+        permissions = [
+            ('can_add_book', 'Can add book'),
+            ('can_change_book', 'Can change book'),
+            ('can_delete_book', 'Can delete book'),
+        ]
+
 class UserProfile(models.Model):
     ROLE_CHOICES = [
         ('Admin', 'Admin'),
