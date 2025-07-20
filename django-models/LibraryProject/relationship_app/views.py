@@ -1,5 +1,11 @@
-from django.shortcuts import HttpResponse
-from .models import Book
+from django.shortcuts import render, redirect, HttpResponse
+from django.views.generic.detail import DetailView
+
+# Authentication imports
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+from .models import Book, Library
 
 def list_books(request):
     # Fetch all books from the database
