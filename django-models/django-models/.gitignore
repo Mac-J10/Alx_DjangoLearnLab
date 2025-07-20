@@ -1,0 +1,41 @@
+# 🐍 Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# 💽 SQLite database
+db.sqlite3
+
+# 🧪 Test coverage reports
+htmlcov/
+*.cover
+coverage.xml
+*.log
+
+# 🗂️ Django static & media files (optional — if generated dynamically)
+staticfiles/
+media/
+
+# 📦 Virtual environment
+venv/
+ENV/
+env/
+.venv/
+.env/
+
+# 🔧 VS Code editor settings
+.vscode/
+*.code-workspace
+
+# 📋 Migrations (optional: keep if tracking migrations with version control)
+**/migrations/
+!**/migrations/__init__.py
+
+# 🧾 System files
+.DS_Store
+Thumbs.db
+
+# 🔐 Secret config (make sure secrets are in environment variables)
+*.env
