@@ -122,3 +122,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'relationship_app:login'
+LOGIN_REDIRECT_URL = 'relationship_app:book-list'
+LOGOUT_REDIRECT_URL = 'relationship_app:login'
