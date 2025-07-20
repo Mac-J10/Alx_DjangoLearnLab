@@ -9,6 +9,8 @@ app_name = 'relationship_app'
 urlpatterns = [
     # existing app views
     path('books/', list_books, name='book-list'),
+    path('books/', views.list_books, name='book-list'),
+
     path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library-detail'),
 
     # registration view

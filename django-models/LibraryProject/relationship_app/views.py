@@ -1,5 +1,3 @@
-# LibraryProject/relationship_app/views.py
-
 from django.shortcuts import HttpResponse
 from .models import Book
 
