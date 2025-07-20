@@ -1,4 +1,5 @@
-from relationship_app.models import Author, Book, Library, Librarian
+from relationship_app.models import Author, Book
+from relationship_app.models import Library, Librarian
 
 # Query all books by a specific author
 def books_by_author(author_name):
@@ -24,3 +25,8 @@ def librarian_for_library(library_name):
         return library.librarian
     except (Library.DoesNotExist, Librarian.DoesNotExist):
         return f"Librarian not found for library named {library_name}."
+
+library = Library.objects.get(id=1)
+librarian = Librarian.objects.get(library=library)
+print(f"Librarian for {library.name}: {librarian.name}")
+
