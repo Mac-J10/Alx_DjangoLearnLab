@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
-from django.shortcuts import render
 from .models import Book, Library
 
 def register(request):
