@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
+from django.shortcuts import render
 from .models import Book, Library
 
 def register(request):
@@ -23,11 +24,9 @@ def register(request):
     )
 
 def list_books(request):
-    # Fetch all books from the database
-    books = Book.objects.all()  # ← this line satisfies the check
-
-    # Build a simple text response: one “Title by Author” per line
-    lines = [f"{book.title} by {book.author.name}" for book in books]
-    text_output = "\n".join(lines)
-
-    return HttpResponse(text_output, content_type="text/plain")
+    books = Book.objects.all()                      # ← Book.objects.all()
+    return render(
+        request,
+        'relationship_app/book_list.html',           # ← relationship_app/book_list.html
+        {'books': books}
+    )
