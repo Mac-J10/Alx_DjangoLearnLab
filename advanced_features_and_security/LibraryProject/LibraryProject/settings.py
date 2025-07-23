@@ -141,3 +141,10 @@ SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS = 31536000  # One year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+
+# Point Django at your new user model
+AUTH_USER_MODEL = "bookshelf.CustomUser"
+
+# (Optional) media configuration
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
