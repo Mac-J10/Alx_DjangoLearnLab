@@ -1,4 +1,6 @@
 from .models import Book
+from django.shortcuts import render, redirect
+from .forms import ExampleForm
 
 def search_books(request):
     query = request.GET.get("q", "")
