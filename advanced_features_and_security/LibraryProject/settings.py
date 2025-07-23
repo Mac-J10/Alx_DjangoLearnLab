@@ -126,3 +126,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'relationship_app:login'
 LOGIN_REDIRECT_URL = 'relationship_app:book-list'
 LOGOUT_REDIRECT_URL = 'relationship_app:login'
+
+DEBUG = False  # Never True in production
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Optional but recommended
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
