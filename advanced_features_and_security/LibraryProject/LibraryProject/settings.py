@@ -148,3 +148,6 @@ AUTH_USER_MODEL = "bookshelf.CustomUser"
 # (Optional) media configuration
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Trust the X-Forwarded-Proto header set by your proxy/load balancer
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
