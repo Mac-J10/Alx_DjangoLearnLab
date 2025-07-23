@@ -19,6 +19,10 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
     )
 
+# Register CustomUser using admin.site.register
+admin.site.register(CustomUser, CustomUserAdmin)
+
+
 
 # Register your models here.
 from django.contrib import admin
