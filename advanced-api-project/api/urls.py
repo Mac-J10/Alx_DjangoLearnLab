@@ -14,14 +14,14 @@ urlpatterns = [
     path('books/', BookListView.as_view(), name='book-list'),
 
     # Retrieve a single book by its ID
-    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
+    path('books/', BookDetailView.as_view(), name='book-detail'),
 
     # Create a new book
     path('books/create/', BookCreateView.as_view(), name='book-create'),
 
     # Update an existing book (PUT/PATCH)
-    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book-update'),
+    path('books/update/', BookUpdateView.as_view(), name='book-update'),
 
     # Delete a book
-    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),
+    path('books/delete/', BookDeleteView.as_view(), name='book-delete'),
 ]
