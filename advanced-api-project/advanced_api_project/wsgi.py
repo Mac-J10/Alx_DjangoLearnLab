@@ -11,6 +11,16 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# advanced_api_project/urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+]
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'advanced_api_project.settings')
 
 application = get_wsgi_application()
