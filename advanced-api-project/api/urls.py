@@ -1,5 +1,5 @@
 # api/urls.py
-from django.urls import path
+from django.urls import include, path
 from .views import (
     BookListView,
     BookDetailView,
@@ -9,6 +9,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('api/', include('api.urls')),
     # List all books
     path('books/', BookListView.as_view(), name='book-list'),
 
