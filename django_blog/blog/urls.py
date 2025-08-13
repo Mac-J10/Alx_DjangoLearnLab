@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Comment URLs – ADD THESE:
     path(
-        'post/<int:post_pk>/comments/new/',
+        'post/<int:pk>/comments/new/',
         CommentCreateView.as_view(),
         name='comment_create'
     ),  # handles POST/new comment on a specific post
