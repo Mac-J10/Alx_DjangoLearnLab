@@ -18,6 +18,7 @@ from .views import (
     register_view,
     login_view,
     profile_view,
+    PostByTagListView,
 )
 from django.contrib.auth.views import LogoutView
 
@@ -61,6 +62,12 @@ urlpatterns = [
 
     # Posts by tag
     path('tags/<str:tag_name>/', TagListView.as_view(), name='posts_by_tag'),
-]
 
+    path(
+        'tags/<slug:tag_slug>/',
+        PostByTagListView.as_view(),
+        name='posts_by_tag'
+    ),
+
+    
 ]
