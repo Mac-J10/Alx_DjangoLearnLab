@@ -10,6 +10,11 @@ from .views import (
     CommentCreateView,    
     CommentUpdateView,
     CommentDeleteView,
+    TagListView,
+    SearchResultsView,
+    register_view,
+    login_view,
+    profile_view,
     register_view,
     login_view,
     profile_view,
@@ -50,4 +55,12 @@ urlpatterns = [
     path('login/',    login_view,    name='login'),
     path('logout/',   LogoutView.as_view(next_page='blog:login'), name='logout'),
     path('profile/',  profile_view,  name='profile'),
+
+     # Search
+    path('search/', SearchResultsView.as_view(), name='search_results'),
+
+    # Posts by tag
+    path('tags/<str:tag_name>/', TagListView.as_view(), name='posts_by_tag'),
+]
+
 ]

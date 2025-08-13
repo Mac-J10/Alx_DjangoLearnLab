@@ -10,6 +10,22 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from .models import Post, Comment
 from .forms import PostForm, CommentForm, ProfileForm, CustomUserCreationForm
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Post
+
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '')
+        return Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
 
 # --- Post CRUD Views ---
 
@@ -139,3 +155,17 @@ def profile_view(request):
         form = ProfileForm(instance=request.user)
 
     return render(request, 'blog/profile.html', {'form': form})
+
+class TagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag = self.kwargs['tag_name']
+        return Post.objects.filter(tags__name__iexact=tag).distinct()
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['tag_name'] = self.kwargs['tag_name']
+        return ctx

@@ -16,6 +16,10 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'published_date']
+        
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 5}),
+        }
 
 class ProfileForm(forms.ModelForm):
     class Meta:
