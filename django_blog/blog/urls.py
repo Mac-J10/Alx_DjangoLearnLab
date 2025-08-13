@@ -1,28 +1,31 @@
-from django.urls import path
-from django.contrib.auth.views import LogoutView
+# blog/urls.py
 
-from django_blog.blog.templates.blog.views import profile_view
-from .views import profile_view
-from . import views
+from django.urls import path
 from .views import (
     PostListView,
     PostDetailView,
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    profile_view,
+    register_view,
+    login_view,
 )
-
+from django.contrib.auth.views import LogoutView
 
 app_name = 'blog'
 
 urlpatterns = [
-    path('register/', views.register_view, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', LogoutView.as_view(next_page='blog:login'), name='logout'),
+    # Post CRUD
+    path('posts/', PostListView.as_view(),            name='post_list'),
+    path('post/new/', PostCreateView.as_view(),       name='post_create'),      # post/new/
+    path('post/<int:pk>/', PostDetailView.as_view(),  name='post_detail'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),  # post/<int:pk>/update/
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),  # post/<int:pk>/delete/
+
+    # Profile & Auth
     path('profile/', profile_view, name='profile'),
-    path('posts/', PostListView.as_view(), name='post_list'),
-    path('posts/new/', PostCreateView.as_view(), name='post_create'),
-    path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
-    path('posts/<int:pk>/edit/', PostUpdateView.as_view(), name='post_update'),
-    path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
+    path('register/', register_view, name='register'),
+    path('login/', login_view,     name='login'),
+    path('logout/', LogoutView.as_view(next_page='blog:login'), name='logout'),
 ]
