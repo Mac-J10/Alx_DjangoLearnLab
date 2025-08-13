@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = 'blog:profile'
+LOGOUT_REDIRECT_URL = 'blog:login'
+
+TEMPLATES[0]['DIRS'] = [ BASE_DIR / 'blog' / 'templates' ]
+
 
 # Application definition
 
