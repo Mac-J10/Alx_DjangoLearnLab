@@ -26,4 +26,3 @@ urlpatterns = [
     # Admin site
     path('admin/', admin.site.urls),
 ]
-]
