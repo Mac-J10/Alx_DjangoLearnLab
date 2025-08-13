@@ -1,4 +1,5 @@
 from django import forms
+from taggit.forms import TagWidget
 from .models import Post
 from django.contrib.auth.models import User
 from .models import Comment
@@ -19,6 +20,8 @@ class PostForm(forms.ModelForm):
         
         widgets = {
             'content': forms.Textarea(attrs={'rows': 5}),
+
+            'tags': TagWidget(),
         }
 
 class ProfileForm(forms.ModelForm):
