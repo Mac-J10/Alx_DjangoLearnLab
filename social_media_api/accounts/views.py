@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
 # Create your views here.
+from .models import Post
+from .models import PostSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated 
 from django.contrib.auth import authenticate
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -52,3 +56,33 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    try:
+        target = User.objects.get(id=user_id)
+        if target == request.user:
+            return Response({'error': 'Cannot follow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
+        request.user.follow(target)
+        return Response({'message': f'You are now following {target.username}.'})
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    try:
+        target = User.objects.get(id=user_id)
+        request.user.unfollow(target)
+        return Response({'message': f'You have unfollowed {target.username}.'})
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def feed_view(request):
+    followed_users = request.user.following.all()
+    posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
