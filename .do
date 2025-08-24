@@ -3,7 +3,7 @@ region: nyc1
 services:
   - name: web
     github:
-      repo: your-username/social-media-api
+      repo: Mac-J10/AlxDjangoLearnLab/social-media-api
       branch: main
     build_command: |
       pip install -r requirements.txt
