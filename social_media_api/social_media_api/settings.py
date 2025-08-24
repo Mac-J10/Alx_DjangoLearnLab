@@ -171,3 +171,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+#Expose a PORT  for local scripts or reference
+
+
+
+PORT = int(os.getenv('PORT', 8000))
