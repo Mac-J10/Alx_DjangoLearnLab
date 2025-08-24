@@ -1,0 +1,26 @@
+name: social-media-api
+
+services:
+  - name: web
+    github:
+      repo: "your-github-username/social_media_api"
+      branch: "main"
+    build_command: "pip install -r requirements.txt"
+    run_command: "gunicorn social_media_api.wsgi --bind 0.0.0.0:$PORT"
+    envs:
+      - key: DJANGO_SETTINGS_MODULE
+        value: "social_media_api.settings"
+        scope: RUN_AND_BUILD
+      - key: SECRET_KEY
+        value: "<your-secret-key>"
+        scope: RUN_AND_BUILD
+      - key: DEBUG
+        value: "False"
+        scope: RUN_AND_BUILD
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+databases:
+  - name: db
+    engine: pg
+    version: "13"
