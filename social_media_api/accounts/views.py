@@ -6,7 +6,7 @@ from .models import PostSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated 
 from django.contrib.auth import authenticate
-from rest_framework import generics, status
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
@@ -59,33 +59,50 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
     
 @api_view(['POST'])
-@permission_classes([])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])
 def follow_user(request, user_id):
+    """
+    Authenticated users can follow another user.
+    """
     try:
-        target = User.objects.get(id=user_id)
-        target = CustomUser
+        # ensure CustomUser.objects.all() is used
+        target = CustomUser.objects.all().get(id=user_id)
         if target == request.user:
             return Response(
                 {'error': 'Cannot follow yourself.'},
                 status=status.HTTP_400_BAD_REQUEST
-                )
-        request.user.follow(target)
-        return Response({'message': f'You are now following {target.username}.'})
-    except User.DoesNotExist:
-        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+            )
+        request.user.following.add(target)
+        return Response(
+            {'message': f'You are now following {target.username}.'},
+            status=status.HTTP_200_OK
+        )
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
 
 @api_view(['POST'])
-@permission_classes([])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])
 def unfollow_user(request, user_id):
+    """
+    Authenticated users can unfollow another user.
+    """
     try:
-        target = User.objects.get(id=user_id)
-        target = CustomUser.objects.get(id=user_id)
-        request.user.unfollow(target)
-        return Response({'message': f'You have unfollowed {target.username}.'})
-    except User.DoesNotExist:
-        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+        target = CustomUser.objects.all().get(id=user_id)
+        request.user.following.remove(target)
+        return Response(
+            {'message': f'You have unfollowed {target.username}.'},
+            status=status.HTTP_200_OK
+        )
+    except CustomUser.DoesNotExist:
+        return Response(
+            {'error': 'User not found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
