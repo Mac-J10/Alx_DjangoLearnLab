@@ -1,9 +1,17 @@
 # posts/views.py
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
+
+from .models import Post, Like
+from notifications.models import Notification
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -56,3 +64,31 @@ class CommentViewSet(viewsets.ModelViewSet):
     filterset_fields = ['post']
     ordering_fields = ['created_at']
     ordering = ['created_at']
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    existing, created = Like.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        return Response({'error': 'Already liked.'}, status=status.HTTP_400_BAD_REQUEST)
+    Notification.objects.create(
+        recipient=post.author,
+        actor=request.user,
+        verb='liked your post',
+        target_content_type=ContentType.objects.get_for_model(post),
+        target_object_id=post.id
+    )
+    return Response({'message': 'Post liked.'}, status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    try:
+        like = Like.objects.get(user=request.user, post=post)
+        like.delete()
+        return Response({'message': 'Like removed.'})
+    except Like.DoesNotExist:
+        return Response({'error': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)

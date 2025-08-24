@@ -1,7 +1,7 @@
 # posts/serializers.py
 
 from rest_framework import serializers
-from .models import Post, Comment
+from .models import Post, Comment, Like
 
 class CommentSerializer(serializers.ModelSerializer):
     author_username = serializers.ReadOnlyField(source='author.username')
@@ -55,3 +55,9 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['author'] = self.context['request'].user
         return super().create(validated_data)
+    
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ['id', 'user', 'post', 'timestamp']
+        read_only_fields = ['user', 'timestamp']

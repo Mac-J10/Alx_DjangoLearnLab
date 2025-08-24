@@ -12,6 +12,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from django.contrib.auth import get_user_model
+from .models import CustomUser
 
 User = get_user_model()
 
@@ -58,22 +59,29 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
     
 @api_view(['POST'])
+@permission_classes([])
 @permission_classes([IsAuthenticated])
 def follow_user(request, user_id):
     try:
         target = User.objects.get(id=user_id)
+        target = CustomUser
         if target == request.user:
-            return Response({'error': 'Cannot follow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Cannot follow yourself.'},
+                status=status.HTTP_400_BAD_REQUEST
+                )
         request.user.follow(target)
         return Response({'message': f'You are now following {target.username}.'})
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
+@permission_classes([])
 @permission_classes([IsAuthenticated])
 def unfollow_user(request, user_id):
     try:
         target = User.objects.get(id=user_id)
+        target = CustomUser.objects.get(id=user_id)
         request.user.unfollow(target)
         return Response({'message': f'You have unfollowed {target.username}.'})
     except User.DoesNotExist:
